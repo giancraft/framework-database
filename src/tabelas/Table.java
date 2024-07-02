@@ -2,14 +2,15 @@ package tabelas;
 
 import conexao.Conexao;
 import dataBase.DataBase;
+import interfaces.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class CriadorTabelas {
+public class Table implements ITable{
 	private String nomeTabela;
 	private DataBase db;
 	
-	public CriadorTabelas(String nomeTabela, DataBase db) {
+	public Table(String nomeTabela, DataBase db) {
 		this.nomeTabela = nomeTabela;
 		this.db = db;
 	}
@@ -62,17 +63,11 @@ public class CriadorTabelas {
 		}
 	}
 	
-	public boolean addFK(Conexao conexao, Atributo attr) {
+	public boolean addFK(Conexao conexao, Atributo attr, ForeignKey fk) {
 		try {
 			Connection conn = conexao.conectar(db);
-			String sql = "ALTER TABLE " + getNomeTabela() + " ADD COLUMN IF NOT EXISTS " + attr.getNomeAttr() + " " 
-			+ attr.getTipoAttr() + ";";
+			String sql = "ALTER TABLE " + fk.getTabela() + " ADD CONSTRAINT " + fk.getNome() + " FOREIGN KEY (" + fk.getNomeReferencia() + ") REFERENCES " + fk.getTabelaReferencia() + "(";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.executeUpdate();
-		    ps.close();
-		    System.out.println(sql + "\n");
-			sql = "ALTER TABLE " + getNomeTabela() + " ADD CONSTRAINT " + attr.getTipoKey() + ";";
-			ps = conn.prepareStatement(sql);
 			ps.executeUpdate();
             ps.close();
             System.out.println(sql + "\n");

@@ -25,7 +25,7 @@ public class Main {
 		attr2.nomeAttr("nome")
 		.varchar(15);
 		
-		CriadorTabelas criador = new CriadorTabelas("teste", db);
+		Table criador = new Table("teste", db);
 		criador.criarTabela(conexao, attr1);
 		criador.addColuna(conexao, attr2);
 		
@@ -39,7 +39,7 @@ public class Main {
 		.inteiro(11)
 		.foreignKey(criador.getNomeTabela());
 		
-		CriadorTabelas criador2 = new CriadorTabelas("teste2", db);
+		Table criador2 = new Table("teste2", db);
 		criador2.criarTabela(conexao, attr3);
 		criador2.addColuna(conexao, attr2);
 		criador2.addFK(conexao, attr4);
