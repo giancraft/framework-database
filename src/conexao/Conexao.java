@@ -1,17 +1,25 @@
 package conexao;
 
 import java.sql.Connection;
+import interfaces.*;
 import java.sql.DriverManager;
 
 import dataBase.DataBase;
 
-public class Conexao {
-	private String usuario = "root";
-	private String senha = "";
-	private String caminho = "localhost";
-	private int porta = 3306;
+public class Conexao implements IConnection{
+	private static String usuario = "root";
+	private static String senha = "";
+	private static String caminho = "localhost";
+	private static int porta = 3306;
 	private static Conexao conn;
     
+	public Conexao(String usuario, String senha, String caminho, int porta) {
+		Conexao.usuario = usuario;
+		Conexao.senha = senha;
+		Conexao.caminho = caminho;
+		Conexao.porta = porta;
+	}
+	
 	private Conexao() {
 		
 	}
@@ -23,48 +31,57 @@ public class Conexao {
 	}
 	
 	public Conexao usuario(String user) {
-		this.usuario = user;
-		return this;
-	}
-	public Conexao senha(String senha) {
-		this.senha = senha;
-		return this;
-	}
-	public Conexao caminho(String caminho) {
-		this.caminho = caminho;
-		return this;
-	}
-	public Conexao porta (int porta) {
-		this.porta = porta;
-		return this;
+		Conexao.usuario = user;
+		return conn;
 	}
 	
-	public String getUsuario() {
+	public Conexao senha(String senha) {
+		Conexao.senha = senha;
+		return conn;
+	}
+	
+	public Conexao caminho(String caminho) {
+		Conexao.caminho = caminho;
+		return conn;
+	}
+	
+	public Conexao porta(int porta) {
+		Conexao.porta = porta;
+		return conn;
+	}
+	
+	public static String getUsuario() {
 		return usuario;
 	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public static void setUsuario(String usuario) {
+		Conexao.usuario = usuario;
 	}
-	public String getSenha() {
+	public static String getSenha() {
 		return senha;
 	}
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public static void setSenha(String senha) {
+		Conexao.senha = senha;
 	}
-	public String getCaminho() {
+	public static String getCaminho() {
 		return caminho;
 	}
-	public void setCaminho(String caminho) {
-		this.caminho = caminho;
+	public static void setCaminho(String caminho) {
+		Conexao.caminho = caminho;
 	}
-	public int getPorta() {
+	public static int getPorta() {
 		return porta;
 	}
-	public void setPorta(int porta) {
-		this.porta = porta;
+	public static void setPorta(int porta) {
+		Conexao.porta = porta;
 	}
-	
-	public Connection ex() {
+	public static Conexao getConn() {
+		return conn;
+	}
+	public static void setConn(Conexao conn) {
+		Conexao.conn = conn;
+	}
+
+	public static Connection conectarSemSchema() {
 		try {
 			String url = "jdbc:mysql://" + getCaminho() + ":" + getPorta();
 			return DriverManager.getConnection(url,getUsuario(),getSenha());
@@ -75,10 +92,10 @@ public class Conexao {
         }
 	}
 	
-	public Connection conectar(DataBase db) {
+	public static Connection conectar() {
     	try {
     		//Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://" + getCaminho() + ":" + getPorta() + "/" + db.getSchema();
+            String url = "jdbc:mysql://" + getCaminho() + ":" + getPorta() + "/" + DataBase.getSchema();
             return DriverManager.getConnection(url,getUsuario(),getSenha());
         } catch (Exception e) {
         	System.out.println("Erro: " + e.toString());

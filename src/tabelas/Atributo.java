@@ -5,6 +5,11 @@ public class Atributo {
 	private String tipoAttr;
 	private String tipoKey = "";
 	
+	public Atributo (String nomeAttr, String tipoAttr) {
+		this.nomeAttr = nomeAttr;
+		this.tipoAttr = tipoAttr;
+	}
+	
 	public Atributo nomeAttr(String nome) {
 		this.nomeAttr = nome;
 		return this;
