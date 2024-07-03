@@ -6,5 +6,6 @@ import tabelas.*;
 public interface ITable {
 	public boolean criarTabela(Conexao conn, Atributo attr);
 	public boolean addColuna(Conexao conn, Atributo attr);
-	public boolean addFK(Conexao conn, Atributo attr,ForeignKey fk);
+	public boolean addPK(Conexao conn, PrimaryKey pk);
+	public boolean addFK(Conexao conn, ForeignKey fk);
 }
