@@ -2,7 +2,6 @@ package tabelas;
 
 public class ForeignKey {
 	private String nome;
-	private String nomeFK;
 	private String nomeReferencia;
 	private String tabelaReferencia;
 	private String tabela;
@@ -19,12 +18,6 @@ public class ForeignKey {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-	public String getNomeFK() {
-		return nomeFK;
-	}
-	public void setNomeFK(String nomeFK) {
-		this.nomeFK = nomeFK;
 	}
 	public String getNomeReferencia() {
 		return nomeReferencia;

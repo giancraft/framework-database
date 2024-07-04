@@ -12,13 +12,6 @@ public class Conexao implements IConnection{
 	private static String caminho = "localhost";
 	private static int porta = 3306;
 	private static Conexao conn;
-    
-	public Conexao(String usuario, String senha, String caminho, int porta) {
-		Conexao.usuario = usuario;
-		Conexao.senha = senha;
-		Conexao.caminho = caminho;
-		Conexao.porta = porta;
-	}
 	
 	private Conexao() {
 		
@@ -87,7 +80,6 @@ public class Conexao implements IConnection{
 			return DriverManager.getConnection(url,getUsuario(),getSenha());
 		} catch (Exception e) {
         	System.out.println("Erro: " + e.toString());
-        	e.printStackTrace();
             return null;
         }
 	}
@@ -95,11 +87,10 @@ public class Conexao implements IConnection{
 	public static Connection conectar() {
     	try {
     		//Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = "jdbc:mysql://" + getCaminho() + ":" + getPorta() + "/" + DataBase.getSchema();
+            String url = "jdbc:mysql://" + getCaminho() + ":" + getPorta() + "/" + DataBase.getNome();
             return DriverManager.getConnection(url,getUsuario(),getSenha());
         } catch (Exception e) {
         	System.out.println("Erro: " + e.toString());
-        	e.printStackTrace();
             return null;
         }
     }

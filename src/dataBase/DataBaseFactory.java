@@ -16,7 +16,7 @@ public class DataBaseFactory implements IDataBaseFactory{
             System.out.println(sql + "\n");
 			return new DataBase(nomeSchema);
 		} catch (Exception e) {
-            e.printStackTrace();
+			System.out.println("Erro: " + e.toString());
             return null;
 		}
 	}
@@ -31,7 +31,7 @@ public class DataBaseFactory implements IDataBaseFactory{
             System.out.println(sql + "\n");
 			return true;
 		} catch (Exception e) {
-            e.printStackTrace();
+			System.out.println("Erro: " + e.toString());
             return false;
 		}
 	}

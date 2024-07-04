@@ -1,6 +1,6 @@
 package atributo;
 
-public class TipoAtributo {
+public abstract class TipoAtributo {
 	private String tipoAtributo;
 	
 	public String getTipoAtributo() {

@@ -5,6 +5,7 @@ import interfaces.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import atributo.*;
+import java.util.List;
 
 public class TableFactory implements ITableFactory{
 	
@@ -22,7 +23,7 @@ public class TableFactory implements ITableFactory{
             System.out.println(sql + "\n");
 			return new Table(nomeTabela);
 		} catch (Exception e) {
-            e.printStackTrace();
+			System.out.println("Erro: " + e.toString());
             return null;
 		}
 	}
@@ -38,45 +39,10 @@ public class TableFactory implements ITableFactory{
             System.out.println(sql + "\n");
 			return new Atributo(nomeAttr, tipoAttr);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Erro: " + e.toString());
 			return null;
 		}
 	}
-	
-	/*private boolean primaryKeyExists(Conexao conexao) throws Exception {
-		Connection conn = Conexao.conectar(); 
-        String sql = "SELECT COUNT(*) FROM information_schema.table_constraints "
-                     + "WHERE table_schema = ? AND table_name = ? AND constraint_type = 'PRIMARY KEY'";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1, DataBase.getSchema());
-        ps.setString(2, getNomeTabela());
-        ResultSet rs = ps.executeQuery();
-        boolean exists = false;
-        if (rs.next()) {
-            exists = rs.getInt(1) > 0;
-        }
-        rs.close();
-        ps.close();
-        return exists;
-    }*/
-	
-	/*public boolean removerPK(Conexao conexao) {
-        try {
-            if (primaryKeyExists(conexao)) {
-            	Connection conn = Conexao.conectar(); 
-                String sql = "ALTER TABLE " + getNomeTabela() + " DROP PRIMARY KEY;";
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ps.executeUpdate();
-                ps.close();
-                System.out.println(sql + "\n");
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }*/
 	
 	public PrimaryKey criarPK(String nomeAttr, String nomeTabela) {
 		try {
@@ -88,46 +54,32 @@ public class TableFactory implements ITableFactory{
             System.out.println(sql + "\n");
 			return new PrimaryKey(nomeAttr, nomeTabela);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Erro: " + e.toString());
 			return null;
 		}
 	}
 	
-	/* private boolean foreignKeyExists(Conexao conexao, String fkName) throws Exception {
-		 	Connection conn = Conexao.conectar(); 
-	        String sql = "SELECT COUNT(*) FROM information_schema.table_constraints "
-	                     + "WHERE table_schema = ? AND table_name = ? AND constraint_type = 'FOREIGN KEY' AND constraint_name = ?";
-	        PreparedStatement ps = conn.prepareStatement(sql);
-	        ps.setString(1, DataBase.getSchema());
-	        ps.setString(2, getNomeTabela());
-	        ps.setString(3, fkName);
-	        ResultSet rs = ps.executeQuery();
-	        boolean exists = false;
-	        if (rs.next()) {
-	            exists = rs.getInt(1) > 0;
-	        }
-	        rs.close();
-	        ps.close();
-	        return exists;
-	    }*/
-	
-	/*public boolean removerFK(Conexao conexao, ForeignKey fk) {
-        try {
-            if (foreignKeyExists(conexao, fk.getNome())) {
-            	Connection conn = Conexao.conectar(); 
-                String sql = "ALTER TABLE " + fk.getTabela() + " DROP FOREIGN KEY " + fk.getNome() + ";";
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ps.executeUpdate();
-                ps.close();
-                System.out.println(sql + "\n");
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }*/
+	public boolean criarPKComposta(String nomeTabela, List<String>pkColunas) {
+		try {
+			Connection conn = Conexao.conectar();
+			  StringBuilder sql = new StringBuilder("ALTER TABLE " + nomeTabela + " ADD PRIMARY KEY (");
+	            for (int i = 0; i < pkColunas.size(); i++) {
+	                sql.append(pkColunas.get(i));
+	                if (i < pkColunas.size() - 1) {
+	                    sql.append(", ");
+	                }
+	            }
+	            sql.append(");");
+	            PreparedStatement ps = conn.prepareStatement(sql.toString());
+	            ps.executeUpdate();
+	            ps.close();
+	            System.out.println(sql + "\n");
+			return true;
+		} catch (Exception e) {
+			System.out.println("Erro: " + e.toString());
+			return false;
+		}
+	}
 	
 	public ForeignKey criarFK(String nome, String nomeRef, String tabelaRef, String tabela) {
 		try {
@@ -140,8 +92,23 @@ public class TableFactory implements ITableFactory{
             System.out.println(sql + "\n");
 			return new ForeignKey(nome, nomeRef, tabelaRef, tabela);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Erro: " + e.toString());
 			return null;
+		}
+	}
+	
+	public boolean removerTabela(String nomeTabela) {
+		try {
+			Connection conn = Conexao.conectar(); 
+			String sql = "DROP TABLE IF EXISTS " + nomeTabela + ";";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.executeUpdate();
+            ps.close();
+            System.out.println(sql + "\n");
+			return true;
+		} catch (Exception e) {
+			System.out.println("Erro: " + e.toString());
+			return false;
 		}
 	}
 }
