@@ -26,7 +26,15 @@ public class Main {
 		tabela2.criarColuna("teste2", "nome", new Varchar(15));
 		tabela2.criarColuna("teste2", "id_teste", new Int(11));
 		tabela2.criarPK("id_teste2", "teste2");
-		tabela2.criarFK("id_teste", "id_teste", "teste", "teste2");
+		//tabela2.criarFK("id_teste", "id_teste", "teste", "teste2");
+		
+		TableFactory tabelaAs = new TableFactory();
+		tabelaAs.criarTabela("teste_teste2", "id_teste", new Int(11));
+		tabelaAs.criarColuna("teste_teste2", "id_teste2", new Int(11));
+		tabelaAs.criarPK("id_teste", "teste_teste2");
+		tabelaAs.criarPK("id_teste2", "teste_teste2");
+		tabelaAs.criarFK("id_teste", "id_teste", "teste", "teste_teste2");
+		tabelaAs.criarFK("id_teste2", "id_teste2", "teste2", "teste_teste2");
 		
 		
 		
