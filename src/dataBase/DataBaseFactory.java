@@ -24,7 +24,7 @@ public class DataBaseFactory implements IDataBaseFactory{
 	public boolean removerSchema(String nomeSchema) {
 		try {
 			Connection conn = Conexao.conectarSemSchema();
-			String sql = "DROP SCHEMA " + nomeSchema;
+			String sql = "DROP SCHEMA IF EXISTS " + nomeSchema;
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.executeUpdate();
             ps.close();

@@ -3,6 +3,7 @@ package view;
 import conexao.Conexao;
 import dataBase.*;
 import tabelas.*;
+import atributo.*;
 
 public class Main {
 	public static void main(String[] args) {
@@ -15,14 +16,15 @@ public class Main {
 		db.removerSchema("banco");
 		db.criarSchema("banco");
 		TableFactory tabela1 = new TableFactory();
-		tabela1.criarTabela("teste", "id_teste", "int", 11);
-		tabela1.criarColuna("teste", "nome", "varchar", 15);
+		tabela1.criarTabela("teste", "id_teste", new Int(11));
+		tabela1.criarColuna("teste", "nome", new Varchar(15));
+		tabela1.criarColuna("teste", "preco", new Decimal(11,11));
 		tabela1.criarPK("id_teste", "teste");
 		
 		TableFactory tabela2 = new TableFactory();
-		tabela2.criarTabela("teste2", "id_teste2", "int", 11);
-		tabela2.criarColuna("teste2", "nome", "varchar", 15);
-		tabela2.criarColuna("teste2", "id_teste", "int", 11);
+		tabela2.criarTabela("teste2", "id_teste2", new Int(11));
+		tabela2.criarColuna("teste2", "nome", new Varchar(15));
+		tabela2.criarColuna("teste2", "id_teste", new Int(11));
 		tabela2.criarPK("id_teste2", "teste2");
 		tabela2.criarFK("id_teste", "id_teste", "teste", "teste2");
 		

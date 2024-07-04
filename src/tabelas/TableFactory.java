@@ -4,16 +4,18 @@ import conexao.Conexao;
 import interfaces.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import atributo.*;
 
 public class TableFactory implements ITableFactory{
 	
-	public Table criarTabela(String nomeTabela, String nomeAttr, String tipoAttr, int sizeAttr) {
+	public Table criarTabela(String nomeTabela, String nomeAttr, TipoAtributo tipoAttr) {
 		try {
 			Connection conn = Conexao.conectar();  
 			if (conn.isClosed()) {
 				System.out.println("n conectou");
 			}
-			String sql = "CREATE TABLE IF NOT EXISTS " + nomeTabela + " (" + nomeAttr + " " + tipoAttr + ");";
+			String sql = "CREATE TABLE IF NOT EXISTS " + nomeTabela + " (" + nomeAttr + " " + tipoAttr.getTipoAtributo() 
+			+ ");";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.executeUpdate();
             ps.close();
@@ -25,11 +27,11 @@ public class TableFactory implements ITableFactory{
 		}
 	}
 	
-	public Atributo criarColuna(String nomeTabela, String nomeAttr, String tipoAttr, int sizeAttr) {
+	public Atributo criarColuna(String nomeTabela, String nomeAttr, TipoAtributo tipoAttr) {
 		try {
 			Connection conn = Conexao.conectar(); 
 			String sql = "ALTER TABLE " + nomeTabela + " ADD COLUMN IF NOT EXISTS " + nomeAttr + " " 
-			+ tipoAttr + "(" + sizeAttr + ");";
+			+ tipoAttr.getTipoAtributo() + ";";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.executeUpdate();
             ps.close();
